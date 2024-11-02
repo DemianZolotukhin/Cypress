@@ -2,7 +2,7 @@ const { generateUser } = require("../support/generateUser");
 
 describe('Sign Up page', () => {
     beforeEach(() => {
-        cy.visit('user/register');
+        cy.visit('/user/register');
     })
 
     it('should register user', () => {
@@ -11,13 +11,13 @@ describe('Sign Up page', () => {
         cy.get('h1')
             .should('contain.text', 'Sign up');
 
-        cy.get('[placeholder=Username]')
+        cy.findByPlaceholder('Username')
             .type(username)
 
-        cy.get('[placeholder=Email]')
+        cy.findByPlaceholder('Email')
             .type(email)
 
-        cy.get('[placeholder=Password]')
+        cy.findByPlaceholder('Password')
             .type(password)
 
         cy.get('.btn')
@@ -26,10 +26,10 @@ describe('Sign Up page', () => {
         cy.contains('a', 'Global Feed')
             .should('contain.text', 'Global Feed')
 
-        cy.url().should('equal', Cypress.config().baseUrl)
+        cy.assertPageUrl1();
     });
 
-    it.skip('should not allow register with an existed email', () => {
+    it('should not allow register with an existed email', () => {
         const { username, email, password } = generateUser()
 
         cy.get('h1')
@@ -66,7 +66,7 @@ describe('Sign Up page', () => {
 
         cy.visit('/user/register')
 
-        // cy.request('POST', 'https://conduit.mate.academy/user/register', {
+        // cy.request('POST', '/user/register', {
         //     email,
         //     password,
         //     username,
@@ -86,4 +86,41 @@ describe('Sign Up page', () => {
 
         cy.contains('li', 'This email is taken.')
     });
+
+    it('should register user(Method implementation/response doesnt work)', () => {
+        cy.registerNewUser()
+
+        cy.get('.btn')
+            .click()
+
+        cy.contains('a', 'Global Feed')
+            .should('contain.text', 'Global Feed')
+
+        cy.assertPageUrl1();
+    });
+
+    // it('should register user', () => {
+    //     cy.registerNewUserResponse().then(({ username, email, password }) => {
+    //         cy.get('h1')
+    //             .should('contain.text', 'Sign up');
+
+    //         cy.findByPlaceholder('Username')
+    //             .type(username)
+
+    //         cy.findByPlaceholder('Email')
+    //             .type(email)
+
+    //         cy.findByPlaceholder('Password')
+    //             .type(password)
+
+    //         cy.get('.btn')
+    //             .click()
+
+    //         cy.contains('a', 'Global Feed')
+    //             .should('contain.text', 'Global Feed')
+
+    //         cy.assertPageUrl1();
+    //     })
+    // });
+    // response ne robe pizda
 })
