@@ -1,30 +1,89 @@
+const { generateUser } = require("../support/generateUser");
+
 describe('Sign Up page', () => {
     beforeEach(() => {
-        cy.visit('/');
+        cy.visit('user/register');
     })
 
-    it('should have all main part', () => {
-        cy.get('.mainHeading')
-        .should('contain.text', 'XYZ Bank');
+    it('should register user', () => {
+        const { username, email, password } = generateUser()
 
-        cy.contains('button', 'Bank Manager Login')
-        .should('exist')
-        .click()
+        cy.get('h1')
+            .should('contain.text', 'Sign up');
 
-        cy.contains('button', 'Add Customer')
-        .should('exist')
-        .click()
+        cy.get('[placeholder=Username]')
+            .type(username)
 
-        cy.get(':nth-child(1) > .form-control')
-        .type('user_test')
+        cy.get('[placeholder=Email]')
+            .type(email)
 
-        cy.get(':nth-child(2) > .form-control')
-        .type('user_test')
+        cy.get('[placeholder=Password]')
+            .type(password)
 
-        cy.get(':nth-child(3) > .form-control')
-        .type('71919')
+        cy.get('.btn')
+            .click()
 
-        cy.get('form.ng-dirty > .btn')
-        .click()
+        cy.contains('a', 'Global Feed')
+            .should('contain.text', 'Global Feed')
+
+        cy.url().should('equal', Cypress.config().baseUrl)
+    });
+
+    it('should not allow register with an existed email', () => {
+        const { username, email, password } = generateUser()
+
+        cy.get('h1')
+            .should('contain.text', 'Sign up');
+
+        cy.get('[placeholder=Username]')
+            .type(username + '_new')
+
+        cy.get('[placeholder=Email]')
+            .type(email)
+
+        cy.get('[placeholder=Password]')
+            .type('1245676583')
+
+        cy.get('.btn')
+            .click()
+
+        cy.contains('a', 'Global Feed')
+            .should('contain.text', 'Global Feed')
+
+        cy.contains('a', ' Settings')
+            .click()
+
+        cy.url().should('equal', Cypress.config().baseUrl + 'settings')
+        cy.get('h1')
+            .should('contain.text', 'Your Settings')
+
+        cy.contains('button', 'Or click here to logout.')
+            .click()
+
+        cy.url().should('equal', Cypress.config().baseUrl)
+        cy.get('h1')
+            .should('contain.text', 'conduit')
+
+        cy.visit('/user/register')
+
+        // cy.request('POST', 'https://conduit.mate.academy/user/register', {
+        //     email,
+        //     password,
+        //     username,
+        // });
+
+        cy.get('[placeholder=Username]')
+            .type(username + '_new')
+
+        cy.get('[placeholder=Email]')
+            .type(email)
+
+        cy.get('[placeholder=Password]')
+            .type(password)
+
+        cy.get('.btn')
+            .click()
+
+        cy.contains('li', 'This email is taken.')
     });
 })
