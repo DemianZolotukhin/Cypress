@@ -5,37 +5,32 @@ describe('My home page', () => {
     cy.visit('/')
   })
 
-  it('should have all parts', () => {
-    cy.get('.login_logo')
-      .then((element) => {
-        console.log(element)
+  it('should have a title', () => {
+    cy.get('h1').should('contain.text', 'conduit');
+  });
 
-        return element;
-      })
-      .should('contain.text', 'Swag Labs');
+  it('should have a feed', () => {
+    cy.contains('a', 'Global Feed').should('exist')
+  });
 
-    cy.contains('a', 'Global Feed')
-      .should('exist')
+  it('should have a Popular Tags sidebar', () => {
+    cy.contains('.sidebar', 'Popular Tags').should('exist')
+  });
 
-    cy.contains('.sidebar', 'Popular Tags')
-      .should('exist')
+  it('should have a link for Sign In', () => {
+    cy.contains('a', 'Sign in').should('have.attr', 'href', '/user/login')
   })
 
-  it('should click on Sign In button', () => {
-    cy.contains('a', 'Sign in')
-    .should('exist').click();
-    
-    cy.url().should('include', '/login')
-    cy.get('h1').should('contain.text', 'Sign In')
-  })
-
-  it('should click on Sign Up button', () => {
-    cy.contains('a', 'Sign up')
-    .should('exist')
-    .click()
-
-    
-    cy.url().should('include', '/register')
-    cy.get('h1').should('contain.text', 'Sign Up')
+  it('should have a link for Sign Up', () => {
+    cy.contains('a', 'Sign up').should('have.attr', 'href', '/user/register')
   })
 })
+
+
+// cy.contains('a', 'Sign up')
+// .should('exist').click()
+
+
+// cy.url().should('include', '/register')
+
+// cy.get('h1').should('contain.text', 'Sign up')

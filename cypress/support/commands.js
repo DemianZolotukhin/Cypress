@@ -27,6 +27,7 @@ const { generateUser } = require("../support/generateUser");
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 
+
 Cypress.Commands.add('findByPlaceholder', (placeholder) => {
     cy.get(`[placeholder=${placeholder}]`)
 })
@@ -35,42 +36,34 @@ Cypress.Commands.add('findByPlaceholder', (placeholder) => {
 //     originalFn('/#' + url)
 // })
 
-
-Cypress.Commands.add('assertPageUrl1', () => {
-    cy.url().should('equal', Cypress.config().baseUrl)
-})
-
 Cypress.Commands.add('assertPageUrl', (url) => {
     cy.url().should('equal', Cypress.config().baseUrl + url)
 })
 
+// Cypress.Commands.add('assertPageUrl', (url) => {
+//     cy.hash().should('equal', '#' + url)
+// })
+
 Cypress.Commands.add('registerNewUser', () => {
     const { username, email, password } = generateUser()
 
-    cy.get('h1')
-        .should('contain.text', 'Sign up');
-
-    cy.findByPlaceholder('Username')
-        .type(username)
-
-    cy.findByPlaceholder('Email')
-        .type(email)
-
-    cy.findByPlaceholder('Password')
-        .type(password)
+    cy.request('POST', 'https://conduit.mate.academy/api/users', { 
+        user: {
+        email,
+        password,
+        username
+    }}).then(response => ({
+        ...response.body.user,
+        password,
+    }))
 })
 
-// Cypress.Commands.add('registerNewUserResponse', () => {
-//     const { username, email, password } = generateUser()
-
-//     cy.request('POST', assertPageUrl('user/register'), {
-//         email,
-//         password,
-//         username
-//     }).then(response => ({
-//         ...response.body.user,
-//         password,
-//     }))
+// Cypress.Commands.add('findByTestId', (value) => {
+//     cy.get(`[data-cy=${value}]`)
 // })
 
-// response ne robe pizda
+// Cypress.Commands.add('CheckAuthorization', (username) => {
+//     cy.findByTestId('header-username')
+//     .should('contain.text', username)
+// })
+// Методи для проверки по атрибуту, но уменя нету доступа к редактированию css

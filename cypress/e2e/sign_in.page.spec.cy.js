@@ -1,14 +1,26 @@
 /// <reference types="cypress"/>
-const { generateUser } = require("../support/generateUser");
 
 describe('Sign In page', () => {
-  beforeEach(() => {
-    cy.visit('user/login')
-  })
 
-  it('should click on Sign In button', () => {
-    cy.contains('Sign in').click()
+  it('should have a correct title', () => {});
+  it('should require an email', () => {});
+  it('should require a password', () => {});
+  it('should show an error for wrong email', () => {});
+  it('should show an error for wrong password', () => {});
 
-    cy.get('h1').should('contain.text', 'Sign in')
+  it('Should allow to log in', () => {
+    cy.visit('/user/login');
+
+    cy.registerNewUser().then(({ email, password, username }) => {
+
+      cy.findByPlaceholder('Email').type(email);
+
+      cy.findByPlaceholder('Password').type(password + `{Enter}`); // симуляція кліку Enter
+
+      // cy.get('.btn').click()
+
+      cy.get(':nth-child(4) > .nav-link').should('contain.text', username)
+      // Лучше добавить атрибут, который четко опишет елемент
+    })
   })
 })

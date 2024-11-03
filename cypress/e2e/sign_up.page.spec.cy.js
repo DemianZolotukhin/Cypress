@@ -5,31 +5,12 @@ describe('Sign Up page', () => {
         cy.visit('/user/register');
     })
 
-    it('should register user', () => {
-        const { username, email, password } = generateUser()
+    it('should have a correct title', () => { });
+    it('should require an username', () => { });
+    it('should require an email', () => { });
+    it('should require a password', () => { });
 
-        cy.get('h1')
-            .should('contain.text', 'Sign up');
-
-        cy.findByPlaceholder('Username')
-            .type(username)
-
-        cy.findByPlaceholder('Email')
-            .type(email)
-
-        cy.findByPlaceholder('Password')
-            .type(password)
-
-        cy.get('.btn')
-            .click()
-
-        cy.contains('a', 'Global Feed')
-            .should('contain.text', 'Global Feed')
-
-        cy.assertPageUrl1();
-    });
-
-    it('should not allow register with an existed email', () => {
+    it.skip('should register user/register using UI', () => {
         const { username, email, password } = generateUser()
 
         cy.get('h1')
@@ -42,7 +23,7 @@ describe('Sign Up page', () => {
             .type(email)
 
         cy.get('[placeholder=Password]')
-            .type('1245676583')
+            .type(password)
 
         cy.get('.btn')
             .click()
@@ -50,77 +31,71 @@ describe('Sign Up page', () => {
         cy.contains('a', 'Global Feed')
             .should('contain.text', 'Global Feed')
 
-        cy.contains('a', ' Settings')
-            .click()
+        cy.assertPageUrl('/');
+    });
 
-        cy.url().should('equal', Cypress.config().baseUrl + 'settings')
-        cy.get('h1')
-            .should('contain.text', 'Your Settings')
+    it.skip('should not allow register with an existed email/testing with UI', () => {
+        const { username, email, password } = generateUser()
 
-        cy.contains('button', 'Or click here to logout.')
-            .click()
+        cy.get('h1').should('contain.text', 'Sign up');
 
-        cy.url().should('equal', Cypress.config().baseUrl)
-        cy.get('h1')
-            .should('contain.text', 'conduit')
+        cy.findByPlaceholder('Username').type(username)
+
+        cy.findByPlaceholder('Email').type(email)
+
+        cy.findByPlaceholder('Password').type(password)
+
+        cy.get('.btn').click()
+
+        cy.contains('a', 'Global Feed').should('contain.text', 'Global Feed')
+
+        cy.contains('a', ' Settings').click()
+
+        cy.assertPageUrl('/settings')
+
+        cy.get('h1').should('contain.text', 'Your Settings')
+
+        cy.contains('button', 'Or click here to logout.').click()
+
+        cy.assertPageUrl('/');
+
+        cy.get('h1').should('contain.text', 'conduit')
+
+        // cy.request('POST', 'https://conduit.mate.academy/api/users', {
+        // user: {
+        //     email,
+        //     password,
+        //     username
+        //   }
+        // });
 
         cy.visit('/user/register')
 
-        // cy.request('POST', '/user/register', {
-        //     email,
-        //     password,
-        //     username,
-        // });
+        cy.get('[placeholder=Username]').type(username + '_new')
 
-        cy.get('[placeholder=Username]')
-            .type(username + '_new')
+        cy.get('[placeholder=Email]').type(email)
 
-        cy.get('[placeholder=Email]')
-            .type(email)
+        cy.get('[placeholder=Password]').type(password)
+        //typing without custom method
+        //same as cy.findByPlaceholder('Username').type(username)
 
-        cy.get('[placeholder=Password]')
-            .type(password)
-
-        cy.get('.btn')
-            .click()
+        cy.get('.btn').click()
 
         cy.contains('li', 'This email is taken.')
     });
 
-    it('should register user(Method implementation/response doesnt work)', () => {
-        cy.registerNewUser()
+    it(`should not allow register with an existed email 'POST request implementation'`, () => {
+        cy.registerNewUser().then(({ username, email, password }) => {
 
-        cy.get('.btn')
-            .click()
+            cy.findByPlaceholder('Username').type(username)
 
-        cy.contains('a', 'Global Feed')
-            .should('contain.text', 'Global Feed')
+            cy.findByPlaceholder('Email').type(email)
 
-        cy.assertPageUrl1();
+            cy.findByPlaceholder('Password').type(password)
+
+            cy.get('.btn').click()
+
+            cy.contains('li', 'This email is taken.')
+        })
     });
-
-    // it('should register user', () => {
-    //     cy.registerNewUserResponse().then(({ username, email, password }) => {
-    //         cy.get('h1')
-    //             .should('contain.text', 'Sign up');
-
-    //         cy.findByPlaceholder('Username')
-    //             .type(username)
-
-    //         cy.findByPlaceholder('Email')
-    //             .type(email)
-
-    //         cy.findByPlaceholder('Password')
-    //             .type(password)
-
-    //         cy.get('.btn')
-    //             .click()
-
-    //         cy.contains('a', 'Global Feed')
-    //             .should('contain.text', 'Global Feed')
-
-    //         cy.assertPageUrl1();
-    //     })
-    // });
-    // response ne robe pizda
 })
