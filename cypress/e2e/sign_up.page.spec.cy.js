@@ -10,7 +10,7 @@ describe('Sign Up page', () => {
     it('should require an email', () => { });
     it('should require a password', () => { });
 
-    it.skip('should register user/register using UI', () => {
+    it('should register user/register using UI', () => {
         const { username, email, password } = generateUser()
 
         cy.get('h1')
@@ -28,13 +28,12 @@ describe('Sign Up page', () => {
         cy.get('.btn')
             .click()
 
-        cy.contains('a', 'Global Feed')
-            .should('contain.text', 'Global Feed')
+        cy.contains('a', 'Global Feed').should('contain.text', 'Global Feed')
 
         cy.assertPageUrl('/');
     });
 
-    it.skip('should not allow register with an existed email/testing with UI', () => {
+    it('should not allow register with an existed email/testing with UI', () => {
         const { username, email, password } = generateUser()
 
         cy.get('h1').should('contain.text', 'Sign up');
