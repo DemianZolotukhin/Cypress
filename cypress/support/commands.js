@@ -67,3 +67,22 @@ Cypress.Commands.add('registerNewUser', () => {
 //     .should('contain.text', username)
 // })
 // Методи для проверки по атрибуту, но уменя нету доступа к редактированию css
+
+Cypress.Commands.add('login', (user) => {
+    cy.request('POST', 'https://conduit.mate.academy/api/users/login', {
+        user
+    }).then((response) => {
+        expect(response.status).to.eq(200);
+        const user = {
+          username: response.body.user.username,
+          email: response.body.user.email,
+          token: response.body.user.token,
+          bio: response.body.user.bio,
+          image: response.body.user.image,
+          effectiveImage:
+            'https://www.onthisday.com/images/people/homer-simpson.jpg?w=360',
+        };
+        window.localStorage.setItem('user', JSON.stringify(user));
+        cy.setCookie('auth', response.body.user.token);
+    })
+})

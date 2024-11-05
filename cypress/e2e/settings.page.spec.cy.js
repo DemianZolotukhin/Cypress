@@ -3,16 +3,9 @@ describe('Settings page', () => {
         cy.visit('/user/login');
 
         // cy.intercept('POST', '/api/users/login').as('login')
-        cy.registerNewUser().then(({ email, password }) => {
-            cy.request('POST', 'https://conduit.mate.academy/api/users/login', {
-                user: {
-                    email,
-                    password
-                }
-            }).then((response) => {
-                cy.setCookie('auth', response.body.user.token)
-            })
-        })
+        cy.registerNewUser().then((user) => {
+            cy.login(user).then(() => user)
+        }).as('user')
 
         // cy.wait('@login')
 
@@ -21,8 +14,11 @@ describe('Settings page', () => {
 
     it('should have a correct title', () => {
 
-        // cy.get('h1');
+        cy.get('h1').should('contain.text', 'Setting')
+    });
 
-        // cy.should('contain.text', 'Setting')
+    it('should have a email input', function() {
+          cy.findByPlaceholder('Email').should('have.value', this.user.email)
     });
 })
+
