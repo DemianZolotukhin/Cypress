@@ -29,7 +29,7 @@ const { generateUser } = require("../support/generateUser");
 
 
 Cypress.Commands.add('findByPlaceholder', (placeholder) => {
-    cy.get(`[placeholder=${placeholder}]`)
+    cy.get(`[placeholder="${placeholder}"]`)
 })
 
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
@@ -86,3 +86,9 @@ Cypress.Commands.add('login', (user) => {
         cy.setCookie('auth', response.body.user.token);
     })
 })
+
+Cypress.Commands.add('registerAndLoginUser', () => {
+    cy.registerNewUser().then((user) => {
+        cy.login(user).then(() => user)
+    })
+}) 

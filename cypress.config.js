@@ -7,7 +7,13 @@ module.exports = defineConfig({
     viewportHeight: 700,
     defaultCommandTimeout: 8000,
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      // on('task', {
+      //   async clear() {
+      //     await clear()
+
+      //     return null;
+        // }
+      // })
     },
   },
 });
