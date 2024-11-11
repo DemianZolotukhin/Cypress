@@ -1,6 +1,7 @@
 
 describe('Articles', () => {
     beforeEach(() => {
+        cy.task('clear')
         cy.registerAndLoginUser().as('user')
 
         cy.visit('/editor')
