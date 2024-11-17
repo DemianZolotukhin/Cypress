@@ -64,7 +64,7 @@ describe('Sign Up page', () => {
         // user: {
         //     email,
         //     password,
-        //     username
+        //     username,
         //   }
         // });
 
