@@ -20,7 +20,7 @@ describe('Sign In page', () => {
       // cy.get('.btn').click()
 
       cy.get(':nth-child(4) > .nav-link').should('contain.text', username)
-      // Лучше добавить атрибут, который четко опишет елемент
+      // Лучше добавить атрибут, который четко опишет елемент.
     })
   })
 })
