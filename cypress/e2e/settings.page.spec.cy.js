@@ -8,7 +8,6 @@ describe('Settings page', () => {
         }).as('user')
 
         // cy.wait('@login')
-        
 
         cy.visit('/settings');
     })
