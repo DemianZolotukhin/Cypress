@@ -6,7 +6,7 @@ describe('Settings page', () => {
         cy.registerNewUser().then((user) => {
             cy.login(user).then(() => user)
         }).as('user')
-
+ 
         // cy.wait('@login') 
         
 
