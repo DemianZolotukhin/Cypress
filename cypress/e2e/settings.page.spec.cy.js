@@ -7,7 +7,7 @@ describe('Settings page', () => {
             cy.login(user).then(() => user)
         }).as('user')
  
-        // cy.wait('@login') 
+        // cy.wait('@login')
         
 
         cy.visit('/settings');
