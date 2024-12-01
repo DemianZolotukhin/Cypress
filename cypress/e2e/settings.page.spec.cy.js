@@ -22,3 +22,4 @@ describe('Settings page', () => {
           cy.findByPlaceholder('Email').should('have.value', this.user.email)
     });
 })
+
